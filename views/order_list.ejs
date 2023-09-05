@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>주문 목록</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/style/r_style.css">
+
+    <!--  JQuery  -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">주문 목록</span>
+        </div>
+    </nav>
+
+    <!-- 메뉴 -->
+    <div class="container row row-cols-auto justify-content-center mx-auto" id="content">
+
+    </div>
+
+    <div class="container footer mt-7">
+        
+    </div>
+
+    <!-- Scrollable modal -->
+    <div class="modal fade" id="prjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content r-bg-primary">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="prjModelTitle">Modal title</h1>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        aria-label="Close">X</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container mt-5" id="prjModalBody" style="white-space: pre-line;">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+        </script>
+
+    <script type="text/javascript">
+
+        var data = [];
+
+        $(document).ready(function () {
+            loadData();
+            setInterval(function() {
+                loadData();
+            }, 3000);
+        });
+
+        function loadData() {
+            $.ajax({
+                url: "/api/order",
+                type: "GET",
+                async: true,
+                timeout: 3000,
+                success: function (data, status, xhr) {
+            console.log("hello");
+                    if (self.data.length == data.length) {
+                        return;
+                    }
+
+                    self.data = data;
+
+                    $("#content").text("");
+
+                    var html = "";
+                    for (var i = 0; i < data.length; i++) {
+                        html += "<div class=\"card-material d-flex flex-column flex-fill col-5 col-lg-4 p-3 m-3\" style=\"max-width: 480px;\">"
+                        html += "<div class=\"container row row-cols-1 text-center mx-auto\">"
+                        html += "<button onclick=\"loadDetail(" + data[i].orderId + ")\"  data-bs-toggle=\"modal\" data-bs-target=\"#prjModal\"><h1 class=\"fw-bold ms-2\">주문번호 " + data[i].orderId + "</h1></button>"
+                        html += "</div>"
+                        html += "</div>"
+                    }
+
+                    $("#content").html(html);
+                }
+            })
+        }
+
+        function loadDetail(orderId) {
+            $.ajax({
+                url: "/api/order/" + orderId,
+                type: "GET",
+                async: true,
+                timeout: 3000,
+                beforeSend: function () {
+                    $("#prjModelTitle").text("");
+                    $("#prjModalBody").text("");
+                },
+                success: function (data, status, xhr) {
+                    $("#prjModelTitle").text('주문번호 ' + data[0].orderId);
+                    var content = "";
+                    for (var i = 0; i < data.length; i++) {
+                        content += "<p>품목명: " + data[i].menu;
+                        content += "<br>가격: " + (data[i].price * data[i].amount);
+                        content += "<br>수량: " + data[i].amount;
+                        content += "<hr></p>"
+                    }
+                    $("#prjModalBody").html(content);
+                },
+                error: function (xhr, status, error) {
+                    $("#prjModelTitle").text("오류");
+                    $("#prjModalBody").text("프로젝트를 불러올 수 없습니다.");
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

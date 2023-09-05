@@ -1,0 +1,138 @@
+{
+    "snack": [
+        {
+            "menu": "후레쉬 베리",
+            "price": 1200,
+            "image": "freshberry.jpeg"
+        },
+        {
+            "menu": "초콜릿",
+            "price": 500,
+            "image": "abc.jpeg"
+        },
+        {
+            "menu": "소시지",
+            "price": 1000,
+            "image": "sau.png"
+        },
+        {
+            "menu": "약과",
+            "price": 900,
+            "image": "yak.jpeg"
+        },
+        {
+            "menu": "오트밀 과자",
+            "price": 700,
+            "image": "oatmeal.jpeg"
+        },
+        {
+            "menu": "초코파이",
+            "price": 2000,
+            "image": "chocopie.jpeg"
+        },
+        {
+            "menu": "스키틀즈",
+            "price": 1500,
+            "image": "skit.jpeg"
+        },
+        {
+            "menu": "왕뚜껑",
+            "price": 1700,
+            "image": "kingcap.jpeg"
+        },
+        {
+            "menu": "육개장",
+            "price": 1250,
+            "image": "6dog.jpeg"
+        },
+        {
+            "menu": "진라면",
+            "price": 1200,
+            "image": "jin.jpeg"
+        },
+        {
+            "menu": "튀김우동",
+            "price": 1100,
+            "image": "udon.jpeg"
+        }
+    ],
+    "coffee" : [
+        {
+            "menu": "레쓰비",
+            "price": 0,
+            "image": "letsbe.jpeg"
+        },
+        {
+            "menu": "아메리카노",
+            "price": 0,
+            "image": "coffee.jpeg"
+        },
+        {
+            "menu": "믹스 커피",
+            "price": 0,
+            "image": "maxim.jpeg"
+        }
+    ],
+    "beverage" : [
+        {
+            "menu": "레몬 주스",
+            "price": 0,
+            "image": "lemon.jpeg"
+        },
+        {
+            "menu": "콜라",
+            "price": 0,
+            "image": "pepsi.jpeg"
+        },
+        {
+            "menu": "초코 우유",
+            "price": 0,
+            "image": "hersheys.jpeg"
+        },
+        {
+            "menu": "딸기 우유",
+            "price": 0,
+            "image": "strawberry.jpeg"
+        },
+        {
+            "menu": "사이다",
+            "price": 0,
+            "image": "cider.jpeg"
+        },
+        {
+            "menu": "사과 주스",
+            "price": 0,
+            "image": "apple.jpeg"
+        },
+        {
+            "menu": "비타민",
+            "price": 0,
+            "image": "vita100.jpeg"
+        },
+        {
+            "menu": "갈아만든 배",
+            "price": 0,
+            "image": "idh.jpeg"
+        },
+        {
+            "menu": "식혜",
+            "price": 0,
+            "image": "sik.jpeg"
+        },
+        {
+            "menu": "핫식스",
+            "price": 0,
+            "image": "hot6.jpeg"
+        },
+        {
+            "menu": "오렌지 에이드",
+            "price": 0,
+            "image": "orange.jpeg"
+        },
+        {
+            "menu": "게토레이",
+            "price": 0,
+            "image": "gatorade.jpeg"
+        }
+    ]
+}

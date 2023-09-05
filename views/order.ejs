@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>주문하기</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" type="text/css" href="/style/r_style.css">
+
+  <!--  JQuery  -->
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">주문하기</span>
+      <span class="navbar-text"><button class="btn btn-primary" onclick="updateModal();" data-bs-toggle="modal" data-bs-target="#prjModal"><strong>주문 목록</strong> <span id="cart">0개</span></button></span>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2 class="h2 mt-5">스낵</h2>
+    <div class="container row row-cols-auto justify-content-center mx-auto">
+      <% for (var i=0; i < menu.snack.length; i++) { %>
+        <div class="card-material d-flex flex-column flex-fill col-5 col-lg-4 p-3 m-3" style="max-width: 480px;">
+          <h3>
+            <%= menu.snack[i].menu %>
+          </h3>
+          <img src="/img/<%= menu.snack[i].image %>" width="128px;">
+          <span>
+            <%= menu.snack[i].price %>원
+          </span>
+          <Button class="btn btn-secondary" onclick="addToCart('<%= menu.snack[i].menu %>', <%= menu.snack[i].price %>, 1);">추가</Button>
+        </div>
+        <% } %>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="h2">커피</h2>
+    <div class="container row row-cols-auto justify-content-center mx-auto">
+      <% for (var i=0; i < menu.coffee.length; i++) { %>
+        <div class="card-material d-flex flex-column flex-fill col-5 col-lg-4 p-3 m-3" style="max-width: 480px;">
+          <h3>
+            <%= menu.coffee[i].menu %>
+          </h3>
+          <img src="/img/<%= menu.coffee[i].image %>" width="128px;">
+          <span>
+            <%= menu.coffee[i].price %>
+          </span>
+          <Button class="btn btn-secondary" onclick="addToCart('<%= menu.coffee[i].menu %>', <%= menu.coffee[i].price %>, 1);">추가</Button>
+        </div>
+        <% } %>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="h2">음료</h2>
+    <div class="container row row-cols-auto justify-content-center mx-auto">
+      <% for (var i=0; i < menu.beverage.length; i++) { %>
+        <div class="card-material d-flex flex-column flex-fill col-5 col-lg-4 p-3 m-3" style="max-width: 480px;">
+          <h3>
+            <%= menu.beverage[i].menu %>
+          </h3>
+          <img src="/img/<%= menu.beverage[i].image %>" width="128px;">
+          <span>
+            <%= menu.beverage[i].price %>
+          </span>
+          <Button class="btn btn-secondary" onclick="addToCart('<%= menu.beverage[i].menu %>', <%= menu.beverage[i].price %>, 1);">추가</Button>
+        </div>
+        <% } %>
+    </div>
+  </div>
+
+  <div class="container footer mt-7">
+  </div>
+
+  <!-- Scrollable modal -->
+  <div class="modal fade" id="prjModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content r-bg-primary">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="prjModelTitle"></h1>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">X</button>
+        </div>
+        <div class="modal-body">
+          <div class="container mt-5" id="prjModalBody" style="white-space: pre-line;">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <Button type="button" class="btn btn-primary" onclick="placeOrder();">주문</Button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+    </script>
+
+  <script type="text/javascript">
+    var cart = [];
+
+    function addToCart(menu, price, amount) {
+      var exists = false;
+      for (var i = 0; i < cart.length; i++) {
+        if (cart[i].menu == menu) {
+          exists = true;
+          cart[i].amount++;
+          break;
+        }
+      }
+
+      if (!exists) {
+        cart.push({
+          menu: menu,
+          price: price,
+          amount: amount
+        });
+      }
+
+      $("#cart").text(cart.length + "개");
+    }
+
+    function placeOrder() {
+      $.ajax({
+        url: "/api/order",
+        type: "POST",
+        async: true,
+        timeout: 5000,
+        data: {
+          order: cart
+        },
+        success: function (data, status, xhr) {
+          alert("주문이 완료되었습니다.");
+          window.location.href = "/"
+        },
+        error: function (xhr, status, error) {
+          alert("오류가 발생했습니다.");
+        }
+      });
+    }
+
+    function updateModal() {
+      $("#prjModelTitle").text('주문 내역');
+      var content = "";
+      for (var i = 0; i < cart.length; i++) {
+        content += "<p>품목명: " + cart[i].menu;
+        content += "<br>가격: " + (cart[i].price * cart[i].amount);
+        content += "<br>수량: " + cart[i].amount;
+        content += "<hr></p>"
+      }
+      $("#prjModalBody").html(content);
+    }
+
+  </script>
+</body>
+
+</html>
